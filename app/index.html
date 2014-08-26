@@ -10,6 +10,7 @@
         <!-- build:css styles/vendor.css -->
         <!-- bower:css -->
         <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="../bower_components/google-code-prettify/bin/prettify.min.css" />
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css(.tmp) styles/main.css -->
@@ -29,15 +30,14 @@
                     <li><a href="#">About</a></li>
                     <li><a href="#">Contact</a></li>
                 </ul>
-                <h1 class="text-muted">Pi Calculus Editor</h1>
+                <h1 class="text-muted">Pi2Camel</h1>
 
             </div>
 
             <div class="jumbotron">
 
                 <p class="row marketing" id="piCalculus">
-                    <span style="" id="pi61span">Agent ≝ from&lt;uri1&gt;.process&lt;P1&gt;.to&lt;uri2&gt;<br>P1 ≝ in(v).τ.( ν r )out&lte&gt;</span>
-
+                    <span style="color: RED;" id="pi71span">AgentOrch</span><span style="" id="pi72span"> </span><span style="" id="pi73span">≝</span><span style="" id="pi74span"> </span><span style="text-decoration: overline; color: RED;" id="pi75span">from</span><span style="" id="pi76span">&lt;uri1&gt;.</span><span style="text-decoration: overline; color: RED;" id="pi77span">process</span><span style="" id="pi78span">&lt;P1&gt;.</span><span style="text-decoration: overline; color: RED;" id="pi79span">migrate</span><span style="" id="pi80span">&lt;uri2&gt;.</span><span style="text-decoration: overline; color: RED;" id="pi81span">process</span><span style="" id="pi82span">&lt;P2&gt;.</span><span style="text-decoration: overline; color: RED;" id="pi83span">to</span><span style="" id="pi84span">&lt;uri3&gt;</span><span style="" id="pi85span"><br></span><span style="" id="pi86span">P1 ≝ in(v).τ.( ν r m ) </span><span style="text-decoration: overline;" id="pi87span">out</span><span style="" id="pi88span">&lt;r&gt;</span><span style="" id="pi89span"><br></span><span style="" id="pi90span">P2 ≝ in(v).τ.( ν r ) </span><span style="text-decoration: overline;" id="pi91span">out</span><span style="" id="pi92span">&lt;r&gt;</span>
                 </p>
 
             </div>
@@ -50,7 +50,7 @@
                     </p>
 
                     <p>
-                    <label for="textToInsert">Insert as : </label>
+                        <label for="textToInsert">Insert as : </label>
                         <button type="button" class="btn btn-success" onclick="plainFunction()">Normal</button>
                         <button type="button" class="btn btn-success" onclick="sendFunction()">Surligné </button>
                         <button type="button" class="btn btn-success" onclick="tauFunction()">Tau</button>
@@ -62,9 +62,12 @@
                     </p>
                 </div>
             </div>
+            <div class="row marketing" id="codes">
+
+            </div>
 
             <div class="footer">
-                <p><span class="glyphicon glyphicon-heart"></span> from Robin Milner</p>
+                <p><span class="glyphicon glyphicon-heart"></span> from Robin Milner RIP</p>
             </div>
 
         </div>
@@ -74,10 +77,11 @@
         <!-- bower:js -->
         <script src="../bower_components/jquery/dist/jquery.js"></script>
         <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="../bower_components/google-code-prettify/bin/prettify.min.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
             function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
@@ -86,7 +90,7 @@
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','UA-XXXXX-X');ga('send','pageview');
         </script>
-
+        -->
         <!-- build:js scripts/plugins.js -->
         <script src="../bower_components/bootstrap/js/affix.js"></script>
         <script src="../bower_components/bootstrap/js/alert.js"></script>

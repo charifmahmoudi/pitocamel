@@ -1,4 +1,13 @@
 /* Pi calculus grammar */
+%{
+      var agents = [
+      {
+            "type" : '',
+            "name" : '',
+            "inst" : []
+      }
+      ];
+%}
 
 %lex
 %%
@@ -16,7 +25,7 @@
 "ν"       { return 'NU'; }
 "."    { return '.'; }
 ","\s?    { return ','; }
-[a-z]+[a-zA-Z0-9]*\s?  { return 'VAR'; }
+[a-z]+[a-zA-Z0-9]*  { return 'VAR'; }
 [A-Z]+[a-zA-Z0-9]*\s?  { return 'PROC'; }
 \s+       { return 'SEP'; }
 \s?"<br>"\s?       { return 'BR'; }
@@ -40,13 +49,13 @@ calculus
     ;
 definition
   : term
-        { return $term; }
-  |  term br term
-        { return $term1 + $br + $term2; }
+        { $$ = [$term]; }
+  |  definition br term
+        { $$ = $definition.concat($term); }
      ;
 term
     : call def agent
-        { $$ = $call + $def + $agent }
+        { $$ = { "type" : "term" , "sign" : $call, "core" : $agent}; }
     ;
 br
   : BR
@@ -60,13 +69,13 @@ def
 
 agent
   :prefix
-      { $$ = $prefix ; }
+      { $$ = { "type" : "agent", "name" : "simple", "params" : $prefix } ; }
     | agent '+' agent
-      { $$ = $agent1 + '+' + $agent2; }
+      { $$ = { "type" : "agent", "name" : "+", "params" : [$agent1, $agent2] }; }
     | agent '|' agent
-      { $$ = $agent1 + '|' + $agent2; }
+      { $$ = { "type" : "agent", "name" : "|", "params" : [$agent1, $agent2] }; }
     | '!' agent
-      { $$ = '!' + $agent; }
+      { $$ = { "type" : "agent", "name" : "!", "params" : $agent }; }
     ;
 tau
   : TAU
@@ -81,43 +90,43 @@ nu
 
 call
   : process '(' param_list ')'
-      { $$ = $process + '(' + $param_list + ')'; }
+      { $$ =  { "type" : "process", "name" : $process, "params" : $param_list }; }
     | process
-      { $$ = $process ; }
+      { $$ = { "type" : "process", "name" : $process, "params" : [] }; }
     ;
 prefix
   : prefix '.' alpha
-      { $$ = $prefix + '.' + $alpha; }
+      { $$ = $prefix.concat($alpha); }
   | alpha
         { $$ = $alpha; }
   ;
 alpha
   : var '<' param_list '>'
-      { $$ = $var1 + "<" + $param_list + ">"; }
+      { $$ = [{ "type" : "varEM", "name" : $var, "params" : $param_list }]; }
   | var '(' param_list ')'
-      { $$ = $var1 + '(' + $param_list + ')'; }
+      { $$ = [{ "type" : "varRC", "name" : $var, "params" : $param_list }]; }
   | tau
-      { $$ = 'TAU'; }
+      { $$ = [{"type" : "tau", "value" : $tau}]; }
   | call
-      { $$ = $call; }
+      { $$ = [$call]; }
   | new
-        { $$ = $new ; }
+        { $$ = $new; }
     ;
 new
     : '(' nu SEP var_sep_list ')' prefix
-     { $$ = '(' + $nu + ' ' + $var_sep_list + ')' + ' ' + $prefix; }
+     { $$ = [{ "type" : "nu", "value" : $var_sep_list }].concat($prefix); }
    ;
 
 var_list
   : var_list ',' var
-    { $$ = $var_list + ',' + $var; }
+    { $$ = $var_list.concat($var); }
   | var
     { $$ = [$var]; }
   ;
 
 var_sep_list
   : var_sep_list SEP var
-    { $$ = $var_sep_list + ' ' + $var; }
+    { $$ = $var_sep_list.concat($var); }
   | var
     { $$ = [$var]; }
   ;
@@ -129,9 +138,9 @@ var
 
 process_list
   : process_list ',' call
-       { $$ = $process_list + ',' + $call; }
+       { $$ = $process_list.concat($call); }
   | call
-      { $$ = $call; }
+      { $$ = [$call]; }
   ;
 
 process
@@ -141,9 +150,9 @@ process
 
 param_list
   : param_list ',' param
-       { $$ = $param_list + ',' + $param; }
+       { $$ = $param_list.concat($param) ; }
   | param
-      { $$ = $param; }
+      { $$ = [$param]; }
   ;
 
 param
